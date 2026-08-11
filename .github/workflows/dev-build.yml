@@ -1,0 +1,58 @@
+name: Dev build (unsigned, x64)
+
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - dev-build
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: disable git eol translation
+        run: git config --global core.autocrlf false
+
+      - name: checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Stable toolchain
+        uses: actions-rust-lang/setup-rust-toolchain@v1
+        with:
+          toolchain: stable
+          target: x86_64-pc-windows-msvc
+
+      - name: Build release
+        run: cargo build --release --target x86_64-pc-windows-msvc
+
+      - name: Stage build output
+        shell: pwsh
+        run: |
+          $stage = "staging\stremio-shell-ng-windows"
+          New-Item -ItemType Directory -Force -Path $stage | Out-Null
+
+          $releaseDir = "target\x86_64-pc-windows-msvc\release"
+
+          # Main executable
+          Copy-Item "$releaseDir\stremio-shell-ng.exe" -Destination $stage
+
+          # libmpv-2.dll extracted by build.rs into repo root
+          Copy-Item "libmpv-2.dll" -Destination $stage
+
+          # server.js from repo root
+          Copy-Item "server.js" -Destination $stage
+
+          # bin/ contents: stremio-runtime.exe, ffmpeg.exe, ffprobe.exe, ffmpeg DLLs
+          Copy-Item "bin\*" -Destination $stage -Recurse
+
+          Write-Host "Staged files:"
+          Get-ChildItem $stage | Format-Table Name, Length
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: stremio-shell-ng-windows
+          path: staging/stremio-shell-ng-windows
+          if-no-files-found: error
