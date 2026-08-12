@@ -75,7 +75,7 @@ impl DiscordRpc {
                         payload = payload.assets(
                             activity::Assets::new()
                                 .large_image(large_image.as_deref().unwrap_or("stremio_logo"))
-                                .large_text("Stremio"),
+                                .large_text("StremDoBem"),
                         );
 
                         let timestamps = match (start_timestamp, end_timestamp) {

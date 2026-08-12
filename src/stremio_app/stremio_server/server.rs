@@ -164,7 +164,7 @@ impl StremioServer {
                 }
                 Err(err) => {
                     nwg::error_message(
-                        "Stremio server",
+                        "StremDoBem server",
                         format!("Cannot execute stremio-runtime: {}", err).as_str(),
                     );
                 }
@@ -203,7 +203,7 @@ impl PartialUi for StremioServer {
             .build(&mut data.crash_notice)
             .ok();
         let _ = data.start();
-        println!("Stremio server started");
+        println!("StremDoBem server started");
         Ok(())
     }
     fn process_event<'a>(
@@ -216,7 +216,7 @@ impl PartialUi for StremioServer {
         if evt == E::OnNotice && handle == self.crash_notice.handle {
             nwg::modal_error_message(
                 self.parent,
-                "Stremio server crash log",
+                "StremDoBem server crash log",
                 self.logs.lock().unwrap().deref(),
             );
             let _ = self.start();
