@@ -77,6 +77,12 @@ impl StremioServer {
             let server_path = path.clone().join(path::Path::new("server.js"));
             let child = Command::new(runtime_path)
                 .arg(server_path)
+                // The bundled server.js only sends CORS headers for a fixed
+                // origin allowlist that includes 127.0.0.1:11470 (its own
+                // port) but not our locally-served WebUI's origin
+                // (127.0.0.1:11469, see webui_server). NO_CORS disables that
+                // origin check entirely, matching same-origin behavior.
+                .env("NO_CORS", "1")
                 .creation_flags(CREATE_NO_WINDOW)
                 .stdout(Stdio::piped())
                 .stderr(Stdio::piped())

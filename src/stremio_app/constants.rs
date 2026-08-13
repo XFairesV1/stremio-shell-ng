@@ -3,7 +3,11 @@ use url::Url;
 pub const APP_NAME: &str = "StremDoBem";
 pub const IPC_PATH: &str = "//./pipe/com.stremio5.";
 pub const DEV_ENDPOINT: &str = "http://127.0.0.1:11470";
-pub const WEB_ENDPOINT: &str = "https://web.stremio.com/";
+// Points at the bundled, rebranded WebUI served locally by webui_server
+// (patched stremio-core wasm, talking to this fork's own account server) —
+// not the real, officially-hosted web.stremio.com, which would authenticate
+// against a genuine Stremio account instead.
+pub const WEB_ENDPOINT: &str = "http://127.0.0.1:11469/";
 pub const STA_ENDPOINT: &str = "https://staging.strem.io/";
 pub const WINDOW_MIN_WIDTH: i32 = 1000;
 pub const WINDOW_MIN_HEIGHT: i32 = 600;

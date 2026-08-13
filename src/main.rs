@@ -12,7 +12,7 @@ use crate::stremio_app::{
     constants::{
         DEV_ENDPOINT, IPC_PATH, SERVER_IPC_KEY, STA_ENDPOINT, STREMIO_SERVER_DEV_MODE, WEB_ENDPOINT,
     },
-    MainWindow, PipeClient,
+    webui_server, MainWindow, PipeClient,
 };
 
 #[derive(Parser, Debug)]
@@ -107,6 +107,8 @@ fn main() {
         STREMIO_SERVER_DEV_MODE,
         if opt.development { "true" } else { "false" },
     );
+
+    webui_server::start();
 
     let webui_url = if opt.development && opt.webui_url == WEB_ENDPOINT {
         DEV_ENDPOINT.to_string()

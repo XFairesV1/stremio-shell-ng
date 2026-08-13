@@ -15,3 +15,4 @@ pub mod window_settings;
 pub use named_pipe::{PipeClient, PipeServer};
 pub mod constants;
 pub mod updater;
+pub mod webui_server;
