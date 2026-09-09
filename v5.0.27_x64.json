@@ -1,0 +1,14 @@
+{
+  "version": "5.0.27",
+  "tag": "v5.0.27",
+  "arch": "x64",
+  "released": "2026-09-09T01:42:12.921Z",
+  "files": [
+    {
+      "name": "StremDoBemSetup-v5.0.27_x64.exe",
+      "url": "https://github.com/XFairesV1/stremio-shell-ng/releases/download/v5.0.27/StremDoBemSetup-v5.0.27_x64.exe",
+      "checksum": "45d2b5ae9543ab70932947433e7d3484bff702f4b93d78f4312b003909a5e617",
+      "os": "windows"
+    }
+  ]
+}
