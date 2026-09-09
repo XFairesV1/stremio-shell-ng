@@ -56,3 +56,26 @@ jobs:
           name: stremio-shell-ng-windows
           path: staging/stremio-shell-ng-windows
           if-no-files-found: error
+
+      # Everything setup/Stremio.iss needs is already in the checkout (bin/,
+      # server.js, webui/, images/) plus libmpv-2.dll, which build.rs extracts
+      # into the repo root during the build above.
+      - name: Build installer
+        shell: pwsh
+        run: |
+          $iscc = "C:\Program Files (x86)\Inno Setup 6\ISCC.exe"
+          if (-not (Test-Path $iscc)) {
+            choco install innosetup -y --no-progress
+          }
+          if (-not (Test-Path $iscc)) { throw "ISCC.exe not found at $iscc" }
+          & $iscc "setup\Stremio.iss"
+          if ($LASTEXITCODE -ne 0) { throw "ISCC failed with exit code $LASTEXITCODE" }
+          # OutputDir=.. in the .iss puts the installer in the repo root
+          Get-ChildItem "StremDoBemSetup-*.exe" | Format-Table Name, Length
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: stremdobem-installer
+          path: StremDoBemSetup-*.exe
+          if-no-files-found: error
