@@ -20,8 +20,10 @@
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
+; StremDoBem has its own AppId (NOT upstream's DD3870DA-...): sharing it would let
+; the genuine Stremio setup upgrade this install in place, replacing the fork.
 ; (To generate a new GUID, click Tools | Generate GUID inside the IDE.)
-AppId={{DD3870DA-AF3C-4C73-B010-72944AB610C6}
+AppId={{A83B4326-E195-4326-ABC1-6218BFB3618E}
 AppName={#MyAppName}
 AppVersion={#MyAppVersion}
 AppPublisher={#MyAppPublisher}

@@ -1,6 +1,5 @@
 use native_windows_derive::NwgUi;
 use native_windows_gui as nwg;
-use rand::Rng;
 use serde_json;
 use std::{
     cell::RefCell,
@@ -17,7 +16,7 @@ use winapi::um::{winbase::CREATE_BREAKAWAY_FROM_JOB, winuser::WS_EX_TOPMOST};
 
 use crate::stremio_app::{
     constants::{
-        safe_url, web_endpoint_with_streaming_server, APP_NAME, UPDATE_ENDPOINT, UPDATE_INTERVAL,
+        safe_url, update_endpoint, web_endpoint_with_streaming_server, APP_NAME, UPDATE_INTERVAL,
         WEB_ENDPOINT, WINDOW_MIN_HEIGHT, WINDOW_MIN_WIDTH,
     },
     ipc::{RPCRequest, RPCResponse},
@@ -213,14 +212,8 @@ impl MainWindow {
                 let updater_endpoint = if let Some(ref endpoint) = autoupdater_endpoint {
                     endpoint.clone()
                 } else {
-                    let mut rng = rand::thread_rng();
-                    let index = rng.gen_range(0..UPDATE_ENDPOINT.len());
-                    let mut url = Url::parse(UPDATE_ENDPOINT[index]).unwrap();
-                    url.query_pairs_mut().append_pair("arch", env!("ARCH"));
-                    if release_candidate {
-                        url.query_pairs_mut().append_pair("rc", "true");
-                    }
-                    url
+                    Url::parse(&update_endpoint(env!("ARCH"), release_candidate))
+                        .expect("The update endpoint is built from a valid base")
                 };
 
                 let updater =
